@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nikita Sanotskyi — 3D Generalist / Technical Artist</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+body {
+    background-color: #0c070a;
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.04) 0px,
+        rgba(255, 255, 255, 0.04) 6px,
+        rgba(0, 0, 0, 0.2) 6px,
+        rgba(0, 0, 0, 0.2) 14px
+    );
+    color: #ece7e1;
+    font-family: Inter, system-ui, sans-serif;
+    min-height: 100vh;
+}
+.icon-btn{width:40px;height:40px;display:grid;place-items:center;border:1px solid #2a2018;background:#171210;border-radius:12px;color:#d8d2ca;transition:.2s}
+.icon-btn:hover{border-color:rgba(255,122,31,.6);color:#ffb066;transform:translateY(-1px)}
+.filter-btn{transition:.2s}.filter-btn.active{background:linear-gradient(90deg,rgba(255,122,31,.18),rgba(255,176,102,.18));border-color:#ff7a1f;color:#fff4ea}
+.dot{width:28px;height:28px;border-radius:9px;border:1px solid #2a2018;background:#1c1512;color:#9ca3af;font-size:12px;display:grid;place-items:center;flex:0 0 auto}
+.dot.active{border-color:#ff7a1f;color:#fff4ea;background:rgba(255,122,31,.16)}
+.media-file{display:none;flex-direction:column}.media-file.show{display:flex}
+.chip{padding:4px 10px;border:1px solid #2a2018;background:#0b0908;border-radius:8px;font-size:12px;color:#d8d2ca}
+.stage-clickable{cursor:pointer}
+.stage-clickable:hover .expand-hint{opacity:1}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#ff7a1f">
+<style id="retheme">
+h1,h2,h3{font-family:'Sora','Inter',system-ui,sans-serif}
+::selection{background:#ff7a1f;color:#0b0908}
+::-webkit-scrollbar{width:10px;background:#0b0908}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#ff7a1f,#8a4200);border-radius:8px;border:2px solid #0b0908}
+
+.ambient {
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    overflow: hidden;
+    background: 
+        radial-gradient(ellipse 90% 60% at 85% 15%, rgba(255, 135, 35, 0.42) 0%, rgba(220, 70, 45, 0.22) 40%, transparent 75%),
+        radial-gradient(ellipse 80% 50% at 30% 65%, rgba(195, 45, 95, 0.35) 0%, rgba(130, 25, 65, 0.18) 45%, transparent 70%),
+        radial-gradient(ellipse 70% 40% at 75% 85%, rgba(240, 100, 30, 0.25) 0%, transparent 60%),
+        linear-gradient(160deg, #180914 0%, #0c070a 45%, #1c060a 100%);
+}
+
+main#top {
+    position: relative;
+    background: rgba(13, 9, 11, 0.82) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-left: 1px solid rgba(255, 122, 31, 0.35);
+    border-right: 1px solid rgba(255, 122, 31, 0.35);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.65);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+section{position:relative}
+#cv, #portfolio, #breakdowns, #gallery, #contact {background: transparent !important;}
+section+section{border-top:1px solid rgba(255,122,31,.18)!important}
+h2::after{content:"";display:block;width:72px;height:3px;margin-top:10px;background:linear-gradient(90deg,#ff7a1f,transparent);border-radius:2px}
+.project-card{position:relative;transition:transform .35s cubic-bezier(.2,.7,.3,1),box-shadow .35s,border-color .35s}
+.project-card:hover{transform:translateY(-6px);border-color:rgba(255,122,31,.55)!important;box-shadow:0 18px 50px rgba(255,90,0,.2),0 0 0 1px rgba(255,122,31,.25)}
+.project-card::before,.project-card::after{content:"";position:absolute;width:18px;height:18px;border:2px solid #ff7a1f;opacity:0;transition:opacity .3s;z-index:5}
+.project-card::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
+.project-card::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+.project-card:hover::before,.project-card:hover::after{opacity:1}
+.stage .media-img{width:100%;height:100%;object-fit:cover;display:block}
+.ticker{overflow:hidden;background:linear-gradient(90deg,#ff5f0f,#ff8a3d 45%,#ff5f0f);border-top:1px solid rgba(255,255,255,.25);border-bottom:1px solid rgba(255,255,255,.25);transform:rotate(-.7deg) scale(1.03);margin:8px -12px 4px;position:relative;z-index:5}
+.ticker-in{display:flex;gap:40px;white-space:nowrap;padding:9px 0;font-weight:800;letter-spacing:.22em;font-size:12px;color:#0d0a07;width:max-content;animation:tick 30s linear infinite}
+@keyframes tick{to{transform:translateX(-50%)}}
+.showreel-item{cursor:pointer;transform:translateZ(0)}
+.showreel-item:focus-visible{outline:2px solid #ff7a1f;outline-offset:2px}
+#scrollbar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#ff7a1f,#ffb066);z-index:60;box-shadow:0 0 12px rgba(255,122,31,.8)}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+.rv.on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.ticker-in,.amb-glow1,.amb-glow2{animation:none}}
+</style>
+<style id="retheme2">
+#cursorShape{position:fixed;width:40px;height:40px;left:0;top:0;margin:-20px 0 0 -20px;pointer-events:none;z-index:80;border:2px solid rgba(255,122,31,.75);box-shadow:0 0 18px rgba(255,122,31,.6),inset 0 0 10px rgba(255,122,31,.4);opacity:0;transition:opacity .3s;transform:rotate(45deg);}
+section:first-of-type h1{background:linear-gradient(92deg,#fff 0%,#ffd9b8 30%,#ff7a1f 55%,#fff 80%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 7s linear infinite}
+@keyframes shimmer{to{background-position:220% 0}}
+.ghost-mono{position:absolute;right:-4vw;bottom:-14vh;font-family:'Sora',sans-serif;font-weight:800;font-size:34vh;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,122,31,.16);pointer-events:none;user-select:none;animation:floaty 12s ease-in-out infinite alternate;z-index:0}
+@keyframes floaty{to{transform:translateY(-3vh) rotate(2deg)}}
+.ghost-num{position:absolute;top:8vh;right:2vw;font-family:'Sora',sans-serif;font-weight:800;font-size:17vw;line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(255,122,31,.10);pointer-events:none;user-select:none;z-index:0}
+.stats-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;padding:34px 16px}
+.stat{min-width:180px;text-align:center;padding:18px 22px;border:1px solid rgba(255,122,31,.25);background:rgba(23,18,16,.6);backdrop-filter:blur(6px);transition:border-color .3s,transform .3s}
+.stat:hover{border-color:rgba(255,122,31,.7);transform:translateY(-3px)}
+.stat b{display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:42px;font-weight:800;color:#ffffff;line-height:1}
+.stat b em{font-style:normal;color:#ff7a1f;margin-left:4px;font-size:28px}
+.stat span{display:block;font-size:11px;letter-spacing:.18em;color:#ff8a3d;text-transform:uppercase;margin-top:8px;font-weight:700}
+.scrub-wrap{height:160vh;position:relative}
+.scrub-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:0 4vw;overflow:hidden;background:radial-gradient(700px 500px at 50% 55%,rgba(255,122,31,.10),transparent 65%)}
+.scrub-frame{position:relative;width:min(1100px,92vw);aspect-ratio:16/9;max-height:58vh;border:1px solid rgba(255,122,31,.4);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 60px rgba(255,122,31,.12);background:#000;overflow:hidden}
+.scrub-frame video,.scrub-frame img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;background:#000}
+.scrub-hud{position:absolute;left:14px;bottom:12px;display:flex;gap:14px;align-items:center;font-size:11px;letter-spacing:.18em;color:#ffb066}
+.scrub-bar{position:absolute;left:0;bottom:0;height:3px;background:linear-gradient(90deg,#ff7a1f,#ffb066);width:0%;box-shadow:0 0 10px rgba(255,122,31,.8)}
+.scrub-cap{font-size:12px;letter-spacing:.3em;color:#ffb066;font-weight:700}
+.scrub-hint{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.25em;color:#8f867d}
+#mvImg{cursor:zoom-in;transition:max-width .2s ease,max-height .2s ease}
+#mvImg.zoomed{cursor:zoom-out;max-width:none;max-height:none}
+#mvImgWrap.zoomed-wrap{align-items:flex-start;justify-content:flex-start}
+.scrub-hint i{animation:bob 1.6s ease-in-out infinite;color:#ff9a4d}
+@keyframes bob{50%{transform:translateY(5px)}}
+.stage .media-img{animation:kb 16s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.07)}}
+nav a.nav-active{color:#ff9a4d!important}
+nav a.nav-active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#ff7a1f;border-radius:2px;box-shadow:0 0 8px rgba(255,122,31,.9)}
+nav a{position:relative}
+a[class*="bg-white"]:hover,button[class*="bg-white"]:hover{animation:ctapulse 1.2s ease-in-out infinite}
+@keyframes ctapulse{50%{box-shadow:0 8px 34px rgba(255,107,26,.65),0 0 0 4px rgba(255,122,31,.15)}}
+.bigmarq{overflow:hidden;padding:26px 0;border-top:1px solid rgba(255,122,31,.25);border-bottom:1px solid rgba(255,122,31,.25);background:transparent!important;}
+.bigmarq-in{display:flex;gap:48px;width:max-content;white-space:nowrap;animation:tick 22s linear infinite}
+.bigmarq-in span{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(28px,5vw,54px);letter-spacing:.06em;color:#ff7a1f;-webkit-text-stroke:0}
+.photo-frame{position:relative;overflow:hidden;border-radius:18px;border:1px solid rgba(255,122,31,.35);background:#0b0908;transition:transform .35s,border-color .35s,box-shadow .35s}
+.photo-frame:hover{transform:translateY(-4px);border-color:rgba(255,122,31,.7);box-shadow:0 14px 40px rgba(255,100,0,.2)}
+.photo-frame img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.05) brightness(0.95);}
+@media (prefers-reduced-motion:reduce){.stage .media-img,#cursorShape,.ghost-mono,section:first-of-type h1{animation:none}}
+</style>
+</head>
+<body class="antialiased">
+<div class="ambient" aria-hidden="true"></div>
+
+<header class="sticky top-0 z-40 backdrop-blur bg-[#0b0908]/85 border-b border-[#2a2018]">
+<div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+<a href="#top" class="flex items-center gap-3"><span class="w-9 h-9 rounded-lg border border-orange-500/40 bg-orange-500/10 grid place-items-center text-orange-400"><i class="fa-solid fa-cube"></i></span><span class="font-semibold">Nikita Sanotskyi</span></a>
+<nav class="hidden md:flex gap-6 text-sm text-gray-300"><a href="#cv" class="hover:text-orange-400">CV</a><a href="#portfolio" class="hover:text-orange-400">Portfolio</a><a href="#breakdowns" class="hover:text-orange-400">Breakdowns</a><a href="#gallery" class="hover:text-orange-400">Photos</a><a href="#contact" class="hover:text-orange-400">Contact</a></nav>
+<div class="flex gap-2">
+<a href="https://www.youtube.com/watch?v=Iu-vM3DWlQQ" target="_blank" rel="noopener" class="icon-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+<a href="https://www.artstation.com/naeli" target="_blank" rel="noopener" class="icon-btn" aria-label="ArtStation"><i class="fa-brands fa-artstation"></i></a>
+<a href="https://www.linkedin.com/in/nikita-sanotskyi-573929323/" target="_blank" rel="noopener" class="icon-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+<a href="https://www.instagram.com/naeli.memo/" target="_blank" rel="noopener" class="icon-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+</div>
+</div>
+</header>
+
+<main id="top" class="max-w-7xl mx-auto px-4">
+
+<section class="py-20 grid lg:grid-cols-12 gap-8 items-center scroll-mt-20">
+<div class="lg:col-span-7 space-y-5">
+<div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-[#2a2018] bg-[#171210] text-sm"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Available for VFX / Technical Artist roles — EU / Remote</div>
+<h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">Nikita Sanotskyi<span class="block mt-2 bg-gradient-to-r from-orange-400 to-orange-400 bg-clip-text text-transparent">3D Generalist · Procedural TA · VFX</span></h1>
+<p class="text-gray-300 max-w-2xl">Houdini Solaris, FLIP/Pyro simulation, MaterialX/Karma XPU look development, procedural tooling and real-time asset workflows. Clean node graphs, stable renders, deadline-ready delivery.</p>
+<div class="flex flex-wrap gap-3">
+<a href="https://www.youtube.com/watch?v=Iu-vM3DWlQQ" target="_blank" rel="noopener" class="px-5 py-3 rounded-xl bg-orange-500/15 border border-orange-500/50 text-orange-100 font-semibold hover:bg-orange-500/25"><i class="fa-brands fa-youtube mr-2"></i>Watch Reel</a>
+<a href="#portfolio" class="px-5 py-3 rounded-xl bg-orange-500/15 border border-orange-500/50 text-orange-100 font-semibold hover:bg-orange-500/25"><i class="fa-solid fa-layer-group mr-2"></i>Portfolio</a>
+<a href="#contact" class="px-5 py-3 rounded-xl border border-[#2a2018] bg-[#171210] font-semibold hover:border-orange-500/60"><i class="fa-solid fa-paper-plane mr-2"></i>Contact</a>
+</div>
+<div class="flex flex-wrap gap-3 pt-2 text-sm">
+<span class="px-4 py-2 rounded-lg border border-[#2a2018] bg-[#171210]"><i class="fa-solid fa-location-dot mr-2 text-orange-400"></i>Wrocław, Poland</span>
+<a href="mailto:nuki3221@gmail.com" class="px-4 py-2 rounded-lg border border-[#2a2018] bg-[#171210] hover:border-orange-500/60"><i class="fa-solid fa-envelope mr-2 text-orange-400"></i>nuki3221@gmail.com</a>
+<a href="tel:+48739041544" class="px-4 py-2 rounded-lg border border-[#2a2018] bg-[#171210] hover:border-orange-500/60"><i class="fa-solid fa-phone mr-2 text-orange-400"></i>+48 739 041 544</a>
+</div>
+</div>
+<div class="lg:col-span-5 rounded-2xl border border-[#2a2018] bg-[#171210]/70 p-5 space-y-3">
+<p class="text-sm text-gray-400 font-mono">pipeline.status</p>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="font-semibold mb-1">Houdini Solaris / LOPs</p><p class="text-sm text-gray-400">USD, VEX, VOPs, procedural environments and instancing.</p></div>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="font-semibold mb-1">FX & Dynamics</p><p class="text-sm text-gray-400">FLIP, whitewater, pyro, particles and simulation stability.</p></div>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="font-semibold mb-1">LookDev & Rendering</p><p class="text-sm text-gray-400">Karma XPU, Arnold/HtoA, MaterialX shader networks.</p></div>
+</div>
+</section>
+
+<section id="cv" class="py-20 border-t border-[#2a2018] scroll-mt-20">
+<div class="mb-8"><p class="text-orange-400 font-mono text-sm mb-1">// SECTION 01</p><h2 class="text-3xl md:text-4xl font-bold">Deep CV Engine</h2></div>
+<div class="grid lg:grid-cols-12 gap-6">
+<div class="lg:col-span-7 space-y-4">
+<div class="rounded-2xl border border-[#2a2018] bg-[#171210]/70 p-6">
+<h3 class="font-semibold mb-4"><i class="fa-solid fa-microchip text-orange-400 mr-2"></i>Skills Matrix</h3>
+<div class="grid sm:grid-cols-2 gap-4">
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="text-sm font-semibold text-orange-100 mb-2">Procedural & Pipeline</p><div class="flex flex-wrap gap-2"><span class="chip">Houdini Solaris / LOPs</span><span class="chip">VOPs</span><span class="chip">VEX</span><span class="chip">USD Workflows</span><span class="chip">Heightfield Terrains</span></div></div>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="text-sm font-semibold text-orange-100 mb-2">FX & Dynamics</p><div class="flex flex-wrap gap-2"><span class="chip">FLIP Fluids</span><span class="chip">Pyro Simulations</span><span class="chip">Whitewater</span><span class="chip">Particles</span></div></div>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="text-sm font-semibold text-orange-100 mb-2">Modeling & Real-Time</p><div class="flex flex-wrap gap-2"><span class="chip">Maya</span><span class="chip">3ds Max</span><span class="chip">Blender</span><span class="chip">ZBrush</span><span class="chip">Substance Painter/Sampler</span><span class="chip">Unreal Engine</span><span class="chip">Unity</span></div></div>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="text-sm font-semibold text-orange-100 mb-2">LookDev & Rendering</p><div class="flex flex-wrap gap-2"><span class="chip">Karma XPU</span><span class="chip">Arnold (HtoA)</span><span class="chip">MaterialX Shader Networks</span><span class="chip">Light Rigging</span></div></div>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4 sm:col-span-2"><p class="text-sm font-semibold text-orange-100 mb-2">Hardware & Systems Engineering</p><div class="flex flex-wrap gap-2"><span class="chip">Custom PC Architecture</span><span class="chip">Custom Water-Cooling Loops</span><span class="chip">3D Printed Custom Parts</span><span class="chip">Hardware Integration & Tuning</span><span class="chip">Workstation Hardware Optimization</span></div></div>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4 sm:col-span-2"><p class="text-sm font-semibold text-orange-100 mb-2">Compositing & Scripting</p><div class="flex flex-wrap gap-2"><span class="chip">Nuke</span><span class="chip">DaVinci Resolve</span><span class="chip">After Effects</span><span class="chip">Python (Pipeline Scripting)</span></div></div>
+</div>
+</div>
+<div class="rounded-2xl border border-[#2a2018] bg-[#171210]/70 p-6">
+<h3 class="font-semibold mb-4"><i class="fa-solid fa-graduation-cap text-orange-400 mr-2"></i>Education</h3>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4">
+<p class="font-semibold">BA in 3D Animation and VFX for Film and Games</p>
+<p class="text-sm text-gray-400 mt-1">DSW University, Wrocław, Poland · Expected 2026</p>
+<p class="text-sm text-gray-300 mt-2">Thesis: 3D Modeling of Spaceships in Animation — Supervisor: Adam Flamma</p>
+</div>
+<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4 mt-4">
+<p class="font-semibold">Cinematic Lighting in Houdini — Rebelway</p>
+<p class="text-sm text-gray-400 mt-1">Completed course</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 space-y-4">
+<div class="rounded-2xl border border-[#2a2018] bg-[#171210]/70 p-6">
+<h3 class="font-semibold mb-5"><i class="fa-solid fa-briefcase text-orange-400 mr-2"></i>Experience</h3>
+<div class="space-y-6 relative pl-6 before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-px before:bg-orange-500/30">
+<div class="relative"><span class="absolute -left-[24px] top-1 w-4 h-4 rounded-full bg-orange-500"></span><p class="text-xs font-mono text-gray-500 mb-1">Sept 2025 – Aug 2026</p><h4 class="font-semibold">VFX Artist Intern — NEXT QUEST</h4><ul class="mt-3 space-y-2 text-sm text-gray-300"><li>• Built & shaded production assets in Houdini Solaris using dual MaterialX and Arnold pipelines.</li><li>• Authored FLIP, whitewater and pyro simulations with custom Karma MaterialX shaders using transmission and density-driven opacity.</li><li>• Diagnosed render pipeline errors, including Karma XPU crashes, VEX syntax issues and shader bugs.</li></ul></div>
+<div class="relative"><span class="absolute -left-[24px] top-1 w-4 h-4 rounded-full bg-orange-500"></span><p class="text-xs font-mono text-gray-500 mb-1">Team of 4</p><h4 class="font-semibold">VFX Intern — “Urban Veins” Project</h4><ul class="mt-3 space-y-2 text-sm text-gray-300"><li>• Co-developed a procedural Houdini generator for Tatooine-style exterior environments.</li><li>• Maintained structured daily production logs and collaborated in an Agile workflow to improve HDA iteration speed.</li></ul></div>
+<div class="relative"><span class="absolute -left-[24px] top-1 w-4 h-4 rounded-full bg-orange-500"></span><p class="text-xs font-mono text-gray-500 mb-1">Co-founder</p><h4 class="font-semibold">University Student Club "Press Start"</h4><ul class="mt-3 space-y-2 text-sm text-gray-300"><li>• Co-founded and actively managed the student organization from launch, coordinating workshops and creative projects.</li></ul></div>
+<div class="relative"><span class="absolute -left-[24px] top-1 w-4 h-4 rounded-full bg-orange-500"></span><p class="text-xs font-mono text-gray-500 mb-1">Techland Tools</p><h4 class="font-semibold">Developer Tools Exploration</h4><ul class="mt-3 space-y-2 text-sm text-gray-300"><li>• Hands-on experience with Techland Developer Tools for environment setup and asset placement.</li></ul></div>
+<div class="relative"><span class="absolute -left-[24px] top-1 w-4 h-4 rounded-full bg-orange-500"></span><p class="text-xs font-mono text-gray-500 mb-1">2021 – 2022</p><h4 class="font-semibold">Lead Advert Operations & Campaign — Office, Ukraine</h4><ul class="mt-3 space-y-2 text-sm text-gray-300"><li>• Led a 10-person advertising team, overseeing daily operations, campaign workflows, and cross-functional task execution.</li><li>• Scheduled and conducted high-level advertiser meetings to align business goals, timelines, and strategy.</li><li>• Collaborated directly with team members on setup, optimization, and monetization of ad accounts.</li></ul></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="portfolio" class="py-20 border-t border-[#2a2018] scroll-mt-20">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-5 mb-8">
+<div><p class="text-orange-400 font-mono text-sm mb-1">// SECTION 02</p><h2 class="text-3xl md:text-4xl font-bold">Interactive Visual Portfolio</h2><p class="text-gray-400 mt-2 max-w-2xl">Click any preview frame to open expanded overlay mode with full controls and gallery pagination.</p></div>
+<div class="flex flex-wrap gap-2" id="filters">
+<button data-filter="all" class="filter-btn active px-4 py-2 rounded-lg border border-[#2a2018] bg-[#171210] text-sm font-medium">All</button>
+<button data-filter="procedural" class="filter-btn px-4 py-2 rounded-lg border border-[#2a2018] bg-[#171210] text-sm font-medium">Procedural / Tooling</button>
+<button data-filter="vfx" class="filter-btn px-4 py-2 rounded-lg border border-[#2a2018] bg-[#171210] text-sm font-medium">VFX & Sims</button>
+<button data-filter="assets" class="filter-btn px-4 py-2 rounded-lg border border-[#2a2018] bg-[#171210] text-sm font-medium">Hard-Surface & Asset</button>
+</div>
+</div>
+<div id="portfolioGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+</section>
+
+<section id="breakdowns" class="py-20 border-t border-[#2a2018] scroll-mt-20">
+<div class="mb-8"><p class="text-orange-400 font-mono text-sm mb-1">// SECTION 03</p><h2 class="text-3xl md:text-4xl font-bold">Project Breakdown / Case Studies</h2></div>
+<div id="caseGrid" class="grid lg:grid-cols-2 gap-6"></div>
+</section>
+
+<!-- SECTION PHOTO GALLERY -->
+<section id="gallery" class="py-20 border-t border-[#2a2018] scroll-mt-20">
+<div class="mb-8"><p class="text-orange-400 font-mono text-sm mb-1">// PERSONAL PROFILE</p><h2 class="text-3xl md:text-4xl font-bold">Artist Portraits</h2></div>
+<div class="grid md:grid-cols-2 gap-6 items-stretch">
+  <div class="photo-frame h-[55vh] min-h-[380px]">
+    <img src="assets/images/portrait/A7404331.jpg" alt="Nikita Sanotskyi Portrait 1" loading="lazy">
+  </div>
+  <div class="photo-frame h-[55vh] min-h-[380px]">
+    <img src="assets/images/portrait/A7404340-2.jpg" alt="Nikita Sanotskyi Portrait 2" loading="lazy">
+  </div>
+</div>
+</section>
+
+<section id="contact" class="py-20 border-t border-[#2a2018] scroll-mt-20">
+<div class="grid lg:grid-cols-12 gap-8">
+<div class="lg:col-span-5 space-y-4">
+<p class="text-orange-400 font-mono text-sm">// SECTION 04</p>
+<h2 class="text-3xl md:text-4xl font-bold">Contact</h2>
+<p class="text-gray-400 max-w-md">Open to VFX, technical art and procedural tooling work. Primary contact email:</p>
+<a href="mailto:nuki3221@gmail.com" class="inline-flex items-center gap-3 px-4 py-3 rounded-xl border border-[#2a2018] bg-[#171210] hover:border-orange-500/60"><i class="fa-solid fa-envelope text-orange-400"></i>nuki3221@gmail.com</a>
+<div class="flex flex-wrap gap-2 pt-2">
+<a href="https://www.youtube.com/watch?v=Iu-vM3DWlQQ" target="_blank" rel="noopener" class="icon-btn"><i class="fa-brands fa-youtube"></i></a>
+<a href="https://www.artstation.com/naeli" target="_blank" rel="noopener" class="icon-btn"><i class="fa-brands fa-artstation"></i></a>
+<a href="https://www.linkedin.com/in/nikita-sanotskyi-573929323/" target="_blank" rel="noopener" class="icon-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+<a href="https://www.instagram.com/naeli.memo/" target="_blank" rel="noopener" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+</div>
+</div>
+<div class="lg:col-span-7 rounded-2xl border border-[#2a2018] bg-[#171210]/80 p-6">
+<form id="contactForm" class="space-y-4">
+<div class="grid sm:grid-cols-2 gap-4">
+<input name="name" required placeholder="Name" class="w-full rounded-lg border border-[#2a2018] bg-[#0b0908] px-4 py-3 focus:outline-none focus:border-orange-500/70">
+<input name="email" type="email" required placeholder="Email" class="w-full rounded-lg border border-[#2a2018] bg-[#0b0908] px-4 py-3 focus:outline-none focus:border-orange-500/70">
+</div>
+<input name="subject" required placeholder="Subject" class="w-full rounded-lg border border-[#2a2018] bg-[#0b0908] px-4 py-3 focus:outline-none focus:border-orange-500/70">
+<textarea name="message" rows="5" required placeholder="Message" class="w-full rounded-lg border border-[#2a2018] bg-[#0b0908] px-4 py-3 focus:outline-none focus:border-orange-500/70"></textarea>
+<button class="w-full px-5 py-3 rounded-xl bg-orange-500/15 border border-orange-500/50 text-orange-100 font-semibold hover:bg-orange-500/25"><i class="fa-solid fa-paper-plane mr-2"></i>Open Email Draft</button>
+<p id="formStatus" class="text-sm text-emerald-300 hidden">Email draft opened with nuki3221@gmail.com.</p>
+</form>
+</div>
+</div>
+</section>
+
+<footer class="border-t border-[#2a2018] py-8">
+<div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+<p>© <span id="year"></span> Nikita Sanotskyi</p>
+<div class="flex gap-4"><a href="https://www.youtube.com/watch?v=Iu-vM3DWlQQ" target="_blank" rel="noopener" class="hover:text-orange-400">YouTube</a><a href="https://www.artstation.com/naeli" target="_blank" rel="noopener" class="hover:text-orange-400">ArtStation</a><a href="https://www.linkedin.com/in/nikita-sanotskyi-573929323/" target="_blank" rel="noopener" class="hover:text-orange-400">LinkedIn</a><a href="https://www.instagram.com/naeli.memo/" target="_blank" rel="noopener" class="hover:text-orange-400">Instagram</a></div>
+</div>
+</footer>
+
+</main>
+
+<!-- Lightbox / Breakdown Modal -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm grid place-items-center p-4" role="dialog" aria-modal="true">
+<div class="w-full max-w-2xl rounded-2xl border border-[#2a2018] bg-[#121520] overflow-hidden">
+<div class="flex items-center justify-between px-6 py-4 border-b border-[#2a2018]"><h3 id="lbTitle" class="font-semibold">Breakdown</h3><button id="lbClose" class="icon-btn"><i class="fa-solid fa-xmark"></i></button></div>
+<div class="p-6 space-y-4 max-h-[70vh] overflow-auto" id="lbBody"></div>
+</div>
+</div>
+
+<!-- Expanded View Overlay Modal -->
+<div id="mediaViewer" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex flex-col justify-between p-4 md:p-6" role="dialog" aria-modal="true">
+<div class="flex items-center justify-between z-10">
+  <div class="flex items-center gap-3">
+    <h3 id="mvTitle" class="font-semibold text-lg text-white">Project Title</h3>
+    <span id="mvTag" class="px-2 py-1 rounded bg-orange-500/20 border border-orange-500/40 text-orange-400 text-xs">Category</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <button id="mvZoom" class="icon-btn hidden" title="Zoom in/out"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+    <button id="mvClose" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+</div>
+
+<div class="relative flex-1 my-4 flex items-center justify-center overflow-hidden">
+  <button id="mvPrev" class="absolute left-2 md:left-6 z-20 icon-btn w-12 h-12 text-lg bg-black/60 border-white/20 hover:bg-black/80"><i class="fa-solid fa-chevron-left"></i></button>
+  
+  <div id="mvImgWrap" class="w-full h-full flex items-center justify-center p-2 overflow-auto">
+    <video id="mvVideo" class="max-w-full max-h-[80vh] object-contain hidden" controls playsinline></video>
+    <img id="mvImg" class="max-w-full max-h-[80vh] object-contain hidden" alt="">
+    <div id="mvFile" class="hidden flex-col items-center justify-center gap-4 bg-[#171210] p-8 rounded-2xl border border-[#2a2018]">
+      <i class="fa-solid fa-file-lines text-5xl text-orange-400"></i>
+      <p id="mvFileLabel" class="font-semibold text-lg"></p>
+      <a id="mvFileBtn" class="px-5 py-3 rounded-xl border border-orange-500/50 bg-orange-500/20 text-orange-100 hover:bg-orange-500/30" target="_blank">Download / Open File</a>
+    </div>
+  </div>
+
+  <button id="mvNext" class="absolute right-2 md:right-6 z-20 icon-btn w-12 h-12 text-lg bg-black/60 border-white/20 hover:bg-black/80"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<div class="flex flex-col items-center gap-3 z-10">
+  <div id="mvDots" class="flex gap-2 overflow-x-auto max-w-full p-1"></div>
+  <p id="mvSub" class="text-xs text-gray-400 text-center"></p>
+</div>
+</div>
+
+<script>
+const DATA = [
+{id:'razor', title:'Razor Scene — Dust & Final Comp', category:'vfx', tag:'VFX & Sims', poster:'assets/video/razor-scene/1080P_SQ_final_CC_dust_scene0-144_poster.jpg', technical:'Procedural pipeline for building generator. Integrated cloth and dust simulation systems. Manual ship animation and 100% custom manual texturing. Custom 3-point light setup. Procedural rocks generated via Heightfields. Production time: 3 months, ~70 working hours + 100 hours render time.', tools:'Houdini Procedural Generator, Heightfields, Vellum Cloth, Pyro Dust, Manual Keyframe Animation, Custom Shading, 3-Point Lighting, Karma Render', challenge:'Achieving high architectural procedural variety while ensuring stable simulation dynamics for cloth and dust interactions around a keyframed moving vessel.', media:[{type:'video',label:'1080p SQ Final CC',src:'assets/video/razor-scene/1080P_SQ_final_CC_dust_scene0-144.mov'},{type:'video',label:'Vellum Case',src:'assets/video/razor-scene/vellum_case.mp4'},{type:'video',label:'Dust Case',src:'assets/video/razor-scene/dush_case.mp4'}]},
+{id:'tatooine', title:'Turntable Tatooine — Urban Veins Procedural Environment', category:'procedural', tag:'Procedural / Tooling', poster:'assets/video/turntable-tatooine/lq_poster.jpg', technical:'Turntable presentation of "Urban Veins", a procedural Houdini generator for Tatooine-style exteriors (terrain, buildings, rocks, cables) built during the NEXT QUEST internship (180+ hours). Delivered as a low-quality preview plus final 4:5 and 16:9 camera moves.', tools:'Houdini procedural HDA setup, Karma CPU rendering, turntable camera animation, presentation exports', challenge:'Karma CPU renders showed noisy indirect glossy reflections across the scene; fixed by correcting Reflectivity values on the non-metallic shaders and re-tuning bounce/quality settings.', media:[{type:'video',label:'LQ Preview',src:'assets/video/turntable-tatooine/lq.mov'},{type:'video',label:'Antenna Case',src:'assets/video/turntable-tatooine/anthena_case.mp4'},{type:'video',label:'Generative Case',src:'assets/video/turntable-tatooine/generative_case.mp4'}]},
+{id:'light010', title:'Cinematic Lighting 010 — Lightning Shot', category:'vfx', tag:'VFX & Sims', poster:'assets/video/lighting-010/Screenshot 2026-06-21 191758.png', technical:'Built a cinematic lightning/lighting shot with preview and final square/cinemascope variants, including comp-ready sequence output.', tools:'Lighting, VFX compositing, sequence rendering, preview/final iteration', challenge:'Maintaining readable lightning energy across preview and final delivery formats.', media:[{type:'video',label:'LQ Preview',src:'assets/video/lighting-010/lq.mp4'},{type:'video',label:'Lighting Case',src:'assets/video/lighting-010/Lighting_010_case.mp4'},{type:'video',label:'Turntable Bomber',src:'assets/video/lighting-010/turntable_bomber.mp4'}]},
+{id:'light040', title:'Cinematic Lighting 040 — Hold & Fix Pass', category:'vfx', tag:'VFX & Sims', poster:'assets/video/lighting-040/poster.png', technical:'Produced hold/fix and IG-ready corrected versions of shot 040, with screenshot references for review.', tools:'Shot iteration, correction passes, social/delivery format prep', challenge:'Stabilizing the final look while preserving intended cinematic intensity.', media:[{type:'video',label:'Hold Fix CC',src:'assets/video/lighting-040/hold_sh30_v002_fix_CC.mov'},{type:'video',label:'040 Walkthrough',src:'assets/video/lighting-040/040_walkthrrough.mp4'}]},
+{id:'waterfall', title:'Waterfall — FLIP / Whitewater Iterations', category:'vfx', tag:'VFX & Sims', poster:'assets/video/waterfall/Active_Render.0635.jpg', technical:'Houdini FLIP waterfall simulation with a custom-built Karma whitewater shader (mtlxstandard_surface, using transmission and density-driven opacity), replacing the default kma_whitewater1 preset. Iterated through desktop previews and test passes for timing and look review.', tools:'Houdini FLIP simulation, custom MaterialX shading network, Karma rendering', challenge:'The built-in whitewater material preset did not hold up under close inspection, so foam and spray were shaded from scratch with a transmission/density-driven MaterialX network for a more physically believable result.', media:[{type:'video',label:'Desktop Preview',src:'assets/video/waterfall/Water2.mov'},{type:'video',label:'Test Pass 1',src:'assets/video/waterfall/untitled_3.mp4'},{type:'video',label:'Test Pass 2',src:'assets/video/waterfall/untitled_1.mp4'}]},
+{id:'architecture', title:'Architecture — Selected 4K Still Frames', category:'assets', tag:'Hard-Surface & Asset', poster:'assets/images/architecture/Shot_020_01_4k_cc.jpg', technical:'Selected three 4K corrected stills from an architecture sequence for presentation and review. Video in this folder was intentionally excluded.', tools:'Still-frame delivery, 4K CC frames, shot selection', challenge:'Choosing the strongest framed shots for a clean visual presentation.', media:[{type:'image',label:'Shot 020',src:'assets/images/architecture/Shot_020_01_4k_cc.jpg'},{type:'image',label:'Shot 030',src:'assets/images/architecture/Shot_030_01_4k_cc.jpg'},{type:'image',label:'Shot 040',src:'assets/images/architecture/Shot_040_01_4k_cc.jpg'}]},
+{id:'light030', title:'Cinematic Lighting 030 — Cruiser Forest Dark Mood', category:'vfx', tag:'VFX & Sims', poster:'assets/video/lighting-030/Cruiser_forest_dark_mood_poster.jpg', technical:'Included all usable files from the 030 folder: two motion previews and one EXR source file for review/download.', tools:'Motion preview, comp output, EXR source delivery', challenge:'Presenting quick mood tests and higher-quality comp output in one review flow.', media:[{type:'video',label:'Cruiser Forest Dark Mood',src:'assets/video/lighting-030/Cruiser_forest_dark_mood.mov'},{type:'video',label:'Turntable Cruiser',src:'assets/video/lighting-030/turntable_cruiser.mp4'},{type:'video',label:'030 Walkthrough',src:'assets/video/lighting-030/030_walkthrugh.mp4'}]}
+];
+
+function toFileURL(path){
+  if(!path) return '';
+  if(/^https?:\/\//i.test(path)) return path;
+  return path.split('/').map(encodeURIComponent).join('/');
+}
+
+function pauseAllVideos(){
+  document.querySelectorAll('video').forEach(v=>{v.pause();});
+}
+
+function setActiveDots(container,index){
+  if(!container) return;
+  container.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===index));
+}
+
+function showPlaceholder(card, item){
+  const ph=card.querySelector('.placeholder'); 
+  card.querySelector('video').classList.add('hidden'); 
+  card.querySelector('.media-img').classList.add('hidden'); 
+  card.querySelector('.media-file').classList.remove('show'); 
+  ph.classList.remove('hidden'); 
+  if(item.poster){
+    ph.style.backgroundImage=`url('${toFileURL(item.poster)}')`; 
+    ph.classList.add('bg-cover','bg-center');
+  }else{
+    ph.style.backgroundImage='';
+  }
+}
+
+function loadSlide(card,item,index,autoplay=true){
+  const media=item.media[index]; 
+  const video=card.querySelector('video'); 
+  const img=card.querySelector('.media-img'); 
+  const file=card.querySelector('.media-file'); 
+  const ph=card.querySelector('.placeholder'); 
+  pauseAllVideos(); 
+  
+  ph.classList.add('hidden'); 
+  video.classList.add('hidden'); 
+  img.classList.add('hidden'); 
+  file.classList.remove('show'); 
+  
+  if(media.type==='video'){
+    video.src=toFileURL(media.src); 
+    if(item.poster) video.poster=toFileURL(item.poster); 
+    video.classList.remove('hidden'); 
+    if(autoplay) video.play().catch(()=>{});
+  } else if(media.type==='image'){
+    img.src=toFileURL(media.src); 
+    img.classList.remove('hidden');
+  } else {
+    file.classList.add('show'); 
+    file.querySelector('a').href=toFileURL(media.src); 
+    file.querySelector('a').setAttribute('download', media.label); 
+    file.querySelector('.file-label').textContent=media.label;
+  } 
+  setActiveDots(card.querySelector('.dots'),index);
+}
+
+function renderCard(item){
+  const card=document.createElement('article'); 
+  card.className='project-card rounded-2xl border border-[#2a2018] bg-[#171210]/80 overflow-hidden'; 
+  card.dataset.category=item.category; 
+  card.innerHTML=`<div class="stage stage-clickable relative h-64 bg-black overflow-hidden border-b border-[#2a2018]" title="Click to expand view"><div class="placeholder absolute inset-0 bg-[#0b0908]"></div><video class="absolute inset-0 w-full h-full object-contain hidden" controls playsinline preload="none"></video><img class="media-img absolute inset-0 w-full h-full object-cover hidden" alt=""><div class="media-file absolute inset-0 bg-[#0b0908] flex-col items-center justify-center gap-3 p-4 text-center"><i class="fa-solid fa-file-lines text-4xl text-orange-400"></i><p class="file-label font-semibold"></p><a class="px-4 py-2 rounded-lg border border-orange-500/50 bg-orange-500/10 text-orange-100 hover:bg-orange-500/20" target="_blank">Download / Open</a></div><span class="absolute top-3 left-3 px-2 py-1 rounded-md bg-black/70 border border-[#2a2018] text-xs z-10">${item.tag}</span><div class="expand-hint opacity-0 transition-opacity absolute top-3 right-3 px-2 py-1 rounded-md bg-black/70 border border-[#2a2018] text-xs text-orange-400 flex items-center gap-1 z-10"><i class="fa-solid fa-expand"></i> Expand</div></div><div class="px-4 py-3 flex items-center justify-between gap-3 border-b border-[#2a2018] bg-[#171210]/70"><button class="slider-prev icon-btn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button><div class="dots flex gap-2 overflow-x-auto max-w-[190px]">${item.media.map((m,i)=>`<button class="dot ${i===0?'active':''}" data-index="${i}">${i+1}</button>`).join('')}</div><button class="slider-next icon-btn" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button></div><div class="p-5 space-y-3"><h3 class="text-lg font-semibold">${item.title}</h3><p class="text-sm text-gray-400 line-clamp-2">${item.technical}</p><div class="flex flex-wrap gap-2 pt-1"><button class="open-breakdown px-4 py-2 rounded-lg bg-orange-500/15 border border-orange-500/50 text-orange-100 hover:bg-orange-500/25 text-sm font-medium">Breakdown</button><button class="load-first px-4 py-2 rounded-lg border border-[#2a2018] bg-[#1c1512] hover:border-orange-500/50 text-sm font-medium"><i class="fa-solid fa-play mr-1"></i>Load Preview</button></div></div>`;
+  
+  const dots=card.querySelectorAll('.dots .dot'); 
+  const prev=card.querySelector('.slider-prev'); 
+  const next=card.querySelector('.slider-next'); 
+  let current=0; 
+  showPlaceholder(card,item);
+  
+  prev.onclick=()=>{current=(current-1+item.media.length)%item.media.length; loadSlide(card,item,current,false);};
+  next.onclick=()=>{current=(current+1)%item.media.length; loadSlide(card,item,current,false);};
+  dots.forEach(d=>d.onclick=()=>{current=Number(d.dataset.index); loadSlide(card,item,current,true);});
+  
+  card.querySelector('.load-first').onclick=()=>loadSlide(card,item,0,true);
+  card.querySelector('.open-breakdown').onclick=()=>openLightbox(item);
+  
+  card.querySelector('.stage').onclick=(e)=>{
+    if(e.target.tagName==='A'||e.target.tagName==='BUTTON'||e.target.closest('a')) return;
+    openMediaViewer(item, current);
+  };
+  
+  return card;
+}
+
+function renderCase(item){
+  const div=document.createElement('div'); 
+  div.className='rounded-2xl border border-[#2a2018] bg-[#171210]/70 p-6'; 
+  div.innerHTML=`<div class="flex items-start justify-between mb-4"><h3 class="text-xl font-semibold">${item.title}</h3><span class="px-3 py-1 rounded-md bg-orange-500/10 border border-orange-500/30 text-xs text-orange-400">${item.tag}</span></div><div class="space-y-3 text-sm text-gray-300"><p><span class="text-orange-100 font-semibold">Technical Execution:</span> ${item.technical}</p><p><span class="text-orange-100 font-semibold">Tools Used:</span> ${item.tools}</p><p><span class="text-emerald-200 font-semibold">Key Challenge Solved:</span> ${item.challenge}</p></div>`; 
+  return div;
+}
+
+const grid=document.getElementById('portfolioGrid'); 
+const caseGrid=document.getElementById('caseGrid'); 
+DATA.forEach(item=>{grid.appendChild(renderCard(item)); caseGrid.appendChild(renderCase(item));});
+
+document.querySelectorAll('#filters .filter-btn').forEach(btn=>btn.onclick=()=>{
+  document.querySelectorAll('#filters .filter-btn').forEach(b=>b.classList.remove('active')); 
+  btn.classList.add('active'); 
+  const f=btn.dataset.filter; 
+  pauseAllVideos(); 
+  document.querySelectorAll('.project-card').forEach(c=>c.classList.toggle('hidden', !(f==='all'||c.dataset.category===f)));
+});
+
+// Breakdown Lightbox
+const lb=document.getElementById('lightbox'); 
+function openLightbox(item){
+  document.getElementById('lbTitle').textContent=item.title; 
+  document.getElementById('lbBody').innerHTML=`<div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="font-semibold text-orange-100 mb-1">Technical Execution</p><p>${item.technical}</p></div><div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="font-semibold text-orange-100 mb-1">Tools Used</p><p>${item.tools}</p></div><div class="rounded-xl border border-[#2a2018] bg-[#1c1512] p-4"><p class="font-semibold text-emerald-200 mb-1">Key Challenge Solved</p><p>${item.challenge}</p></div>`; 
+  lb.classList.remove('hidden');
+}
+document.getElementById('lbClose').onclick=()=>lb.classList.add('hidden'); 
+lb.onclick=e=>{if(e.target===lb) lb.classList.add('hidden');};
+
+// Expanded Viewer Engine
+const mv=document.getElementById('mediaViewer');
+const mvTitle=document.getElementById('mvTitle');
+const mvTag=document.getElementById('mvTag');
+const mvVideo=document.getElementById('mvVideo');
+const mvImg=document.getElementById('mvImg');
+const mvFile=document.getElementById('mvFile');
+const mvDots=document.getElementById('mvDots');
+const mvSub=document.getElementById('mvSub');
+const mvZoom=document.getElementById('mvZoom');
+const mvImgWrap=document.getElementById('mvImgWrap');
+
+let activeViewerItem = null;
+let activeViewerIndex = 0;
+let mvZoomed = false;
+
+function setMvZoom(on){
+  mvZoomed = on;
+  mvImg.classList.toggle('zoomed', on);
+  mvImgWrap.classList.toggle('zoomed-wrap', on);
+  mvImgWrap.scrollTop = 0;
+  mvImgWrap.scrollLeft = 0;
+  mvZoom.innerHTML = on ? '<i class="fa-solid fa-magnifying-glass-minus"></i>' : '<i class="fa-solid fa-magnifying-glass-plus"></i>';
+}
+mvImg.addEventListener('click', () => setMvZoom(!mvZoomed));
+mvZoom.addEventListener('click', () => setMvZoom(!mvZoomed));
+
+function openMediaViewer(item, startIndex = 0) {
+  pauseAllVideos();
+  activeViewerItem = item;
+  activeViewerIndex = startIndex;
+  
+  mvTitle.textContent = item.title;
+  mvTag.textContent = item.tag;
+  
+  mvDots.innerHTML = item.media.map((m, i) => `<button class="dot ${i === startIndex ? 'active' : ''}" data-index="${i}">${i + 1}</button>`).join('');
+  mvDots.querySelectorAll('.dot').forEach(d => {
+    d.onclick = () => loadViewerSlide(Number(d.dataset.index));
+  });
+  
+  mv.classList.remove('hidden');
+  loadViewerSlide(startIndex);
+}
+
+function loadViewerSlide(index) {
+  if(!activeViewerItem) return;
+  activeViewerIndex = index;
+  const media = activeViewerItem.media[index];
+  
+  pauseAllVideos();
+  setMvZoom(false);
+  
+  mvVideo.classList.add('hidden');
+  mvImg.classList.add('hidden');
+  mvFile.classList.add('hidden');
+  mvFile.classList.remove('show');
+  
+  if (media.type === 'video') {
+    mvVideo.src = toFileURL(media.src);
+    if(activeViewerItem.poster) mvVideo.poster = toFileURL(activeViewerItem.poster);
+    mvVideo.classList.remove('hidden');
+    mvVideo.play().catch(() => {});
+    mvZoom.classList.add('hidden');
+  } else if (media.type === 'image') {
+    mvImg.src = toFileURL(media.src);
+    mvImg.classList.remove('hidden');
+    mvZoom.classList.remove('hidden');
+  } else {
+    mvFile.classList.remove('hidden');
+    mvFile.classList.add('show');
+    mvZoom.classList.add('hidden');
+    document.getElementById('mvFileLabel').textContent = media.label;
+    const btn = document.getElementById('mvFileBtn');
+    btn.href = toFileURL(media.src);
+    btn.setAttribute('download', media.label);
+  }
+  
+  setActiveDots(mvDots, index);
+  const mvNoun = media.type === 'image' ? 'Photo' : 'Clip';
+  mvSub.textContent = `${mvNoun} ${index + 1} of ${activeViewerItem.media.length} — ${media.label}`;
+}
+
+function closeViewer() {
+  pauseAllVideos();
+  setMvZoom(false);
+  mv.classList.add('hidden');
+  activeViewerItem = null;
+}
+
+document.getElementById('mvClose').onclick = closeViewer;
+document.getElementById('mvPrev').onclick = () => {
+  if(!activeViewerItem) return;
+  const prevIdx = (activeViewerIndex - 1 + activeViewerItem.media.length) % activeViewerItem.media.length;
+  loadViewerSlide(prevIdx);
+};
+document.getElementById('mvNext').onclick = () => {
+  if(!activeViewerItem) return;
+  const nextIdx = (activeViewerIndex + 1) % activeViewerItem.media.length;
+  loadViewerSlide(nextIdx);
+};
+
+// Global Hotkeys for Viewers & Modals
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    lb.classList.add('hidden');
+    closeViewer();
+  }
+  if (!mv.classList.contains('hidden') && activeViewerItem) {
+    if (e.key === 'ArrowLeft') {
+      const prevIdx = (activeViewerIndex - 1 + activeViewerItem.media.length) % activeViewerItem.media.length;
+      loadViewerSlide(prevIdx);
+    } else if (e.key === 'ArrowRight') {
+      const nextIdx = (activeViewerIndex + 1) % activeViewerItem.media.length;
+      loadViewerSlide(nextIdx);
+    }
+  }
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.onclick=e=>{const t=document.querySelector(a.getAttribute('href')); if(!t) return; e.preventDefault(); t.scrollIntoView({behavior:'smooth'});});
+document.getElementById('contactForm').onsubmit=e=>{e.preventDefault(); const f=new FormData(e.target); window.location.href=`mailto:nuki3221@gmail.com?subject=${encodeURIComponent(f.get('subject'))}&body=${encodeURIComponent("Name: " + f.get('name') + "\nEmail: " + f.get('email') + "\n\n" + f.get('message'))}`; document.getElementById('formStatus').classList.remove('hidden'); e.target.reset();};
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+
+<script id="retheme-js">
+(function(){
+var bar=document.createElement('div');bar.id='scrollbar';document.body.appendChild(bar);
+var hero=document.querySelector('section');
+if(hero&&!document.getElementById('skillTicker')){
+ var tk=document.createElement('div');tk.id='skillTicker';tk.className='ticker';
+ var items='HOUDINI SOLARIS \u2022 FLIP & WHITWATER \u2022 PYRO \u2022 KARMA XPU \u2022 MATERIALX \u2022 USD / VEX \u2022 NUKE \u2022 MAYA \u2022 UNREAL ENGINE \u2022 3DS MAX \u2022 SUBSTANCE PAINTER / SAMPLER \u2022 PROCEDURAL TOOLING \u2022 ';
+ var inn=document.createElement('div');inn.className='ticker-in';
+ inn.innerHTML='<span>'+items+'</span><span aria-hidden="true">'+items+'</span>';
+ tk.appendChild(inn);hero.insertAdjacentElement('afterend',tk);
+}
+var cvSec=document.getElementById('cv');
+var posters=[]; try{posters=DATA.map(function(p){return p.poster}).filter(Boolean);}catch(e){}
+
+if(posters.length>=4){
+  posters[2]='assets/images/showreel/vlc_zz82kyflsc.jpg';
+  posters[3]='assets/images/showreel/vlc_2zpHACD209.jpg';
+}
+
+if(cvSec&&posters.length&&!document.getElementById('showreelSection')){
+ var sec=document.createElement('section');
+ sec.id='showreelSection';
+ sec.className='py-20 border-t border-[#2a2018] scroll-mt-20';
+ var itemsHTML=posters.map(function(u,i){
+  return '<button type="button" class="showreel-item group relative rounded-xl overflow-hidden border border-[#2a2018] bg-[#0b0908] aspect-video" data-index="'+i+'" aria-label="Open showreel frame '+(i+1)+'">'
+   +'<img src="'+toFileURL(u)+'" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="">'
+   +'<span class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors"></span>'
+   +'<span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><span class="w-10 h-10 rounded-full bg-black/70 border border-orange-500/50 grid place-items-center text-orange-300"><i class="fa-solid fa-magnifying-glass-plus"></i></span></span>'
+   +'</button>';
+ }).join('');
+ sec.innerHTML='<div class="mb-8"><p class="text-orange-400 font-mono text-sm mb-1">// SHOWREEL</p><h2 class="text-3xl md:text-4xl font-bold">Selected Works Gallery</h2><p class="text-gray-400 mt-2 max-w-2xl">Click any frame to open it full-screen with zoom and gallery navigation.</p></div><div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">'+itemsHTML+'</div>';
+ cvSec.insertAdjacentElement('beforebegin',sec);
+
+ var showreelItem={
+  title:'Showreel \u2014 Selected Works',
+  tag:'Gallery',
+  media: posters.map(function(u,i){return {type:'image', label:'Frame '+(i+1), src:u};})
+ };
+ sec.querySelectorAll('.showreel-item').forEach(function(btn){
+  btn.addEventListener('click', function(){
+   openMediaViewer(showreelItem, Number(btn.dataset.index));
+  });
+ });
+}
+
+var plx=Array.prototype.slice.call(document.querySelectorAll('.amb[data-speed]'));
+var tick=false;
+function frame(){tick=false;var y=window.scrollY||0;
+ bar.style.width=(document.body.scrollHeight>innerHeight?(y/(document.body.scrollHeight-innerHeight)*100):0)+'%';
+ plx.forEach(function(el){el.style.translate='0 '+(-y*parseFloat(el.dataset.speed))+'px';});}
+addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(frame);}},{passive:true});frame();
+if('IntersectionObserver' in window){
+ var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.12});
+ document.querySelectorAll('section > *').forEach(function(el){el.classList.add('rv');io.observe(el);});
+}
+})();
+</script>
+
+<script id="retheme-js2">
+(function(){
+var fine=matchMedia('(pointer:fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(fine){
+ var cs=document.createElement('div');cs.id='cursorShape';document.body.appendChild(cs);
+ var cx=innerWidth/2,cy=innerHeight/2,tx=cx,ty=cy,on=false,rot=45;
+ addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;if(!on){on=true;cs.style.opacity=1;}});
+ (function loop(){
+  cx+=(tx-cx)*.12;cy+=(ty-cy)*.12;rot+=0.5;
+  cs.style.transform='translate('+cx+'px,'+cy+'px) rotate('+rot+'deg)';
+  requestAnimationFrame(loop);
+ })();
+}
+var hero=document.querySelector('section');
+if(hero){hero.style.position='relative';var gm=document.createElement('div');gm.className='ghost-mono';gm.textContent='NS';hero.appendChild(gm);}
+var nums={cv:'01',portfolio:'02',breakdowns:'03',gallery:'04',contact:'05'};
+Object.keys(nums).forEach(function(id){var s=document.getElementById(id);if(!s)return;s.style.position='relative';var g=document.createElement('div');g.className='ghost-num';g.textContent=nums[id];s.appendChild(g);});
+
+var stats=[
+  ['180', 'HRS', 'URBAN VEINS BUILD'],
+  ['13', 'Y/O', 'LEARNING 3D SINCE'],
+  ['BA', 'DEGREE', '3D ANIMATION & VFX'],
+  ['4+', 'YEARS', 'CREATIVE EXPERIENCE']
+];
+
+if(hero&&!document.getElementById('statsRow')){
+ var row=document.createElement('div');row.id='statsRow';row.className='stats-row';
+ stats.forEach(function(s){
+   var d=document.createElement('div');
+   d.className='stat';
+   d.innerHTML='<b>'+s[0]+'</b><span>'+s[1]+' '+s[2]+'</span>';
+   row.appendChild(d);
+ });
+ hero.insertAdjacentElement('afterend',row);
+}
+
+var links={};document.querySelectorAll('nav a[href^="#"]').forEach(function(a){links[a.getAttribute('href').slice(1)]=a;});
+if('IntersectionObserver' in window){var nio=new IntersectionObserver(function(es){es.forEach(function(e){var k=e.target.id;if(!links[k])return;if(e.isIntersecting){Object.keys(links).forEach(function(x){links[x].classList.remove('nav-active');});links[k].classList.add('nav-active');}});},{rootMargin:'-35% 0px -55% 0px'});
+ ['cv','portfolio','breakdowns','gallery','contact'].forEach(function(id){var s=document.getElementById(id);if(s)nio.observe(s);});}
+if(fine){function tilt(el){el.addEventListener('mousemove',function(e){var r=el.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  el.style.transform='perspective(900px) rotateX('+(-y*5)+'deg) rotateY('+(x*5)+'deg) translateY(-6px)';});
+ el.addEventListener('mouseleave',function(){el.style.transform='';});}
+ function bindTilt(){document.querySelectorAll('.project-card').forEach(function(c){if(!c.dataset.tilt){c.dataset.tilt='1';tilt(c);}});}
+ if(document.readyState!=='loading')bindTilt();else addEventListener('DOMContentLoaded',bindTilt);
+ setTimeout(bindTilt,800);setTimeout(bindTilt,2500);}
+var ftr=document.querySelector('footer');
+if(ftr&&!document.getElementById('bigMarq')){var m=document.createElement('div');m.id='bigMarq';m.className='bigmarq';
+ var t='NIKITA SANOTSKYI — 3D GENERALIST — VFX / TECHNICAL ART — PROCEDURAL TOOLING — ';
+ m.innerHTML='<div class="bigmarq-in"><span>'+t+'</span><span class="fill">'+t+'</span></div>';
+ ftr.insertAdjacentElement('beforebegin',m);}
+
+var src="assets/video/turntable-tatooine/turntable_only_final_16_9.mp4";
+var poster="assets/video/turntable-tatooine/lq_poster.jpg";
+
+var cvSec=document.getElementById('cv');
+if(src&&cvSec&&!document.getElementById('scrubWrap')){
+ var anchor=document.getElementById('showreelSection')||cvSec;
+ var wrap=document.createElement('div');wrap.id='scrubWrap';wrap.className='scrub-wrap';
+ wrap.innerHTML='<div class="scrub-sticky"><div class="scrub-cap">SCROLL-DRIVEN PLAYBACK — TURNTABLE TATOOINE</div>'+
+ '<div class="scrub-frame"><video muted playsinline preload="auto"></video><div class="scrub-hud"><span id="scrubTC">00:00.0</span></div><div class="scrub-bar" id="scrubBar"></div></div>'+
+ '<div class="scrub-hint"><i class="fa-solid fa-angles-down"></i> SCROLL TO SCRUB</div></div>';
+ anchor.insertAdjacentElement('beforebegin',wrap);
+ var v=wrap.querySelector('video');
+ v.src=toFileURL(src);
+ if(poster)v.poster=toFileURL(poster);
+ var bar=wrap.querySelector('#scrubBar'),tc=wrap.querySelector('#scrubTC');
+ function fmt(t){var mm=Math.floor(t/60),ss=t-60*mm;return (mm<10?'0':'')+mm+':'+(ss<10?'0':'')+ss.toFixed(1);}
+ var dur=0;
+ v.onloadedmetadata=function(){dur=v.duration||0;};
+ v.addEventListener('error',function(){console.warn('[scrub] video failed to load, code:',v.error&&v.error.code);});
+ var pendingTarget=null;
+ var seekWatchdog=null;
+ function armWatchdog(){
+  if(seekWatchdog)return;
+  seekWatchdog=setTimeout(function(){
+   seekWatchdog=null;
+   // browser left "seeking" stuck true (common with long-GOP mp4/mov during fast scrub) -
+   // force the pending target through so playback doesn't freeze on one frame.
+   if(pendingTarget!==null){var t=pendingTarget;pendingTarget=null;try{v.currentTime=t;}catch(e){}}
+  },350);
+ }
+ function applySeek(t){
+  if(v.seeking){pendingTarget=t;armWatchdog();return;}
+  if(seekWatchdog){clearTimeout(seekWatchdog);seekWatchdog=null;}
+  try{v.currentTime=t;}catch(e){}
+ }
+ v.addEventListener('seeked',function(){
+  if(seekWatchdog){clearTimeout(seekWatchdog);seekWatchdog=null;}
+  if(pendingTarget!==null){var t=pendingTarget;pendingTarget=null;applySeek(t);}
+ });
+ function onS(){if(!dur)return;var r=wrap.getBoundingClientRect();var total=wrap.offsetHeight-innerHeight;if(total<=0)return;
+  var pr=-r.top/total;pr=pr<0?0:(pr>1?1:pr);
+  var target=pr*(dur-0.35);
+  if(Math.abs(v.currentTime-target)>0.1) applySeek(target);
+  bar.style.width=(pr*100)+'%';tc.textContent=fmt(target);}
+ var scrubTicking=false;
+ function onScroll(){if(!scrubTicking){scrubTicking=true;requestAnimationFrame(function(){scrubTicking=false;onS();});}}
+ addEventListener('scroll',onScroll,{passive:true});onS();
+ v.onerror=function(){
+   v.src=toFileURL("assets/video/turntable-tatooine/lq.mov");
+ };
+}
+})();
+</script>
+
+</body>
+</html>
