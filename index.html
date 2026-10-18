@@ -546,7 +546,7 @@ section[id]{padding-top:clamp(2.5rem,4vw,4rem)!important;padding-bottom:clamp(2.
 <h1>Nikita <span>Sanotskyi</span></h1>
 </div>
 <div class="hero-visual">
-<div class="hero-visual-image"><video src="assets/video/razor-scene/1080P_SQ_final_CC_dust_scene0-144.mp4" poster="assets/video/razor-scene/1080P_SQ_final_CC_dust_scene0-144_poster.webp" autoplay muted playsinline preload="metadata" aria-label="Rotating cinematic preview of selected portfolio work"></video></div>
+<div class="hero-visual-image"><video src="assets/video/demo_reel/Timeline_LQ.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Portfolio showreel"></video></div>
 <div class="hero-halftone" aria-hidden="true"></div>
 </div>
 <p class="hero-role">Level Artist <span>·</span> VFX <span>·</span> Simulations <span>·</span> Lighting Artist</p>
@@ -736,31 +736,6 @@ function toFileURL(path){
 function pauseAllVideos(){
   document.querySelectorAll('video').forEach(v=>{v.pause();});
 }
-
-const heroPreviewVideo=document.querySelector('.hero-visual video');
-const heroPreviewPlaylist=['razor','light010','waterfall'].map(function(id){
-  const project=DATA.find(function(item){return item.id===id;});
-  const media=project&&project.media.find(function(entry){return entry.type==='video';});
-  return media?{src:media.src,poster:project.poster||''}:null;
-});
-let heroPreviewIndex=0;
-
-function advanceHeroPreview(){
-  if(!heroPreviewVideo||heroPreviewPlaylist.some(function(item){return !item;})){
-    console.error('Hero preview playlist contains a missing project video.');
-    return;
-  }
-  heroPreviewIndex=(heroPreviewIndex+1)%heroPreviewPlaylist.length;
-  const next=heroPreviewPlaylist[heroPreviewIndex];
-  heroPreviewVideo.pause();
-  heroPreviewVideo.src=toFileURL(next.src);
-  if(next.poster)heroPreviewVideo.poster=toFileURL(next.poster);
-  else heroPreviewVideo.removeAttribute('poster');
-  heroPreviewVideo.load();
-  syncHeroPreviewPlayback();
-}
-
-if(heroPreviewVideo)heroPreviewVideo.addEventListener('ended',advanceHeroPreview);
 
 function syncHeroPreviewPlayback(){
   const video=document.querySelector('.hero-visual video');
