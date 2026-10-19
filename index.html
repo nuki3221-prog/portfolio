@@ -250,6 +250,8 @@ body.social-menu-open{overflow:hidden}
 .hero-caption strong{display:block;font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.5rem,2.7vw,2.5rem);font-weight:800;line-height:.95;text-transform:uppercase}
 .hero-caption span{display:block;margin-top:.45rem;color:#c6beb4;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}
 .hero-caption-mark{color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.8rem,6vw,5rem);font-weight:900;line-height:.75}
+.hero-caption{color:inherit;text-decoration:none;transition:transform .2s ease,border-color .2s ease}
+.hero-caption:hover,.hero-caption:focus-visible{transform:translateY(-3px);border-color:#ff7a3d;outline:none}
 .hero-stat-wrap{position:relative;z-index:2;max-width:1440px;margin:0 auto}
 .stats-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;padding:34px 16px}
 .stat{min-width:180px;text-align:center;padding:18px 22px;border:1px solid rgba(255,122,31,.25);background:rgba(23,18,16,.6);backdrop-filter:blur(6px);transition:border-color .3s,transform .3s}
@@ -434,7 +436,7 @@ main#top{position:relative;z-index:1}
 .hero-visual{width:min(100%,860px);min-height:0;height:auto;aspect-ratio:16/9;align-self:center;margin:1rem auto 1.15rem;overflow:visible}
 .hero-visual::before{top:-.6rem;right:-.6rem;width:24%;height:25%}
 .hero-visual-image{inset:0;overflow:hidden}
-.hero-role{width:min(100%,1300px);margin:.75rem auto 0;color:var(--paper);font-size:clamp(1.2rem,2.65vw,2.7rem);line-height:1.08;letter-spacing:.005em;text-wrap:balance}
+.hero-role{width:min(100%,1300px);margin:1.25rem auto 0;color:var(--paper);font-size:clamp(1.2rem,2.65vw,2.7rem);line-height:1.08;letter-spacing:.005em;text-wrap:balance}
 .hero-role span{padding:0 .12em;color:var(--orange)}
 .hero-details{display:flex;flex-direction:column;align-items:center;width:100%;gap:.9rem;margin-top:1rem}
 .hero-availability{margin-top:0}
@@ -583,18 +585,6 @@ button:not(.dot),.hero-actions a{border:1px solid var(--line)}
 @media(max-width:640px){.hero-copy{top:.75rem;left:.75rem;right:.75rem}.hero-copy::before{top:-1.5rem;left:-.75rem;right:-.75rem}.hero-copy h1{width:100%;font-size:clamp(2.2rem,10vw,4rem)!important;white-space:nowrap}.hero-kicker{gap:.55rem;margin-bottom:.55rem;font-size:.75rem}.hero-kicker-index{width:2.3rem;height:2.3rem}.hero-copy::after{top:2.8rem;right:0;padding:.45rem .6rem;font-size:.82rem}.hero-visual{height:auto;aspect-ratio:16/9;}}
 @media(max-width:760px){.featured-work-logos{left:.7rem;bottom:.7rem;gap:.3rem .45rem;min-height:42px;max-width:calc(100% - 1.4rem);padding:.3rem .45rem}.featured-work-logos img{width:clamp(20px,6vw,28px);height:clamp(20px,6vw,28px);flex-basis:clamp(20px,6vw,28px)}.featured-work-logos img.is-wordmark{width:clamp(48px,14vw,68px);height:20px;flex-basis:clamp(48px,14vw,68px)}.featured-work-logo-wordmark{font-size:15px;min-height:20px}.featured-carousel-arrow{top:.7rem;bottom:auto;right:.7rem;width:38px;height:38px}.featured-carousel-prev{right:3.6rem}}
 @media(prefers-reduced-motion:reduce){.poster-divider,.featured-work{opacity:1;transform:translateX(-50%);transition:none}.featured-work-image img,#portfolioGrid .stage-media video,#portfolioGrid .stage-media .media-img,.photo-frame img{transition:none!important}.featured-work.is-changing .featured-work-image>img,.featured-work.is-changing .featured-work-copy>*{animation:none!important}}
-.chapter-nav{position:fixed;z-index:30;left:clamp(.65rem,1.5vw,1.5rem);top:50%;display:flex;align-items:center;gap:.65rem;padding:.55rem .65rem;border:1px solid rgba(255,90,31,.22);background:rgba(9,9,9,.76);backdrop-filter:blur(8px);transform:translateY(-50%)}
-.chapter-nav-readout{display:flex;min-width:76px;flex-direction:column;gap:.08rem}
-.chapter-nav-caption{color:rgba(255,255,255,.42);font:700 .5rem/1 ui-monospace,monospace;letter-spacing:.16em}
-.chapter-nav-number{color:var(--orange);font:900 2rem/.9 'Barlow Condensed',sans-serif}
-.chapter-nav-name{max-width:78px;overflow:hidden;color:var(--paper);font:800 .55rem/1.1 'Barlow Condensed',sans-serif;letter-spacing:.08em;text-overflow:ellipsis;text-transform:uppercase;white-space:nowrap}
-.chapter-nav-track{display:flex;flex-direction:column;gap:.45rem;padding-left:.6rem;border-left:1px solid rgba(255,90,31,.25)}
-.chapter-nav-track a{display:block;width:6px;height:6px;border:1px solid rgba(255,255,255,.38);border-radius:50%;transition:transform .22s,background .22s,border-color .22s,box-shadow .22s}
-.chapter-nav-track a[aria-current="location"]{transform:scale(1.45);border-color:var(--orange);background:var(--orange);box-shadow:0 0 10px rgba(255,90,31,.55)}
-.chapter-nav.is-changing .chapter-nav-number,.chapter-nav.is-changing .chapter-nav-name{animation:chapter-readout .22s ease both}
-@keyframes chapter-readout{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:1100px){.chapter-nav{display:none}}
-@media(prefers-reduced-motion:reduce){.chapter-nav-track a,.chapter-nav.is-changing .chapter-nav-number,.chapter-nav.is-changing .chapter-nav-name{transition:none;animation:none}}
 @property --intro-hole-radius{syntax:"<length>";inherits:false;initial-value:0px}
 #introScreen{position:fixed;z-index:200;inset:0;display:grid;place-items:center;overflow:hidden;background:#090807;color:var(--paper);}
 #introScreen[hidden]{display:none}
@@ -655,11 +645,6 @@ body.intro-locked{overflow:hidden}
 </div>
 </aside>
 
-<nav class="chapter-nav" aria-label="Portfolio chapters">
-<div class="chapter-nav-readout"><span class="chapter-nav-caption">CHAPTER</span><span id="chapterNumber" class="chapter-nav-number">00</span><span id="chapterName" class="chapter-nav-name">INTRO</span></div>
-<div class="chapter-nav-track"><a href="#top" aria-label="00 Intro" aria-current="location"></a><a href="#cv" aria-label="01 CV"></a><a href="#portfolio" aria-label="02 Selected works"></a><a href="#gallery" aria-label="03 Photos"></a><a href="#contact" aria-label="04 Contact"></a></div>
-</nav>
-
 <main id="top" class="max-w-7xl mx-auto px-4">
 
 <section class="hero-section scroll-mt-20">
@@ -670,7 +655,7 @@ body.intro-locked{overflow:hidden}
 <h1>Nikita <span>Sanotskyi</span></h1>
 </div>
 <span class="hero-art-label">Selected Work / Showreel</span>
-<div class="hero-caption"><div><strong>Worlds in Motion</strong><span>Simulation / Lighting / Procedural Art</span></div><span class="hero-caption-mark">01</span></div>
+<a class="hero-caption" href="#portfolio" aria-label="Explore selected works"><div><strong>Worlds in Motion</strong><span>Simulation / Lighting / Procedural Art</span></div><span class="hero-caption-mark">01</span></a>
 </div>
 <p class="hero-role">Level Artist <span>·</span> VFX <span>·</span> Simulations <span>·</span> Lighting Artist</p>
 <div class="hero-details">
@@ -1429,6 +1414,15 @@ featuredProjects.forEach((project,index)=>{
 });
 document.getElementById('featuredWorkPrev').onclick=()=>showFeaturedProject(featuredIndex-1);
 document.getElementById('featuredWorkNext').onclick=()=>showFeaturedProject(featuredIndex+1);
+document.addEventListener('keydown',event=>{
+  if(event.altKey||event.ctrlKey||event.metaKey||event.shiftKey)return;
+  if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;
+  if(event.target.closest&&event.target.closest('input,textarea,select,[contenteditable="true"]'))return;
+  const bounds=featuredSection.getBoundingClientRect();
+  if(bounds.bottom<=0||bounds.top>=window.innerHeight)return;
+  event.preventDefault();
+  showFeaturedProject(featuredIndex+(event.key==='ArrowRight'?1:-1));
+});
 document.getElementById('featuredWorkOpen').onclick=()=>openMediaViewer(featuredProjects[featuredIndex],0);
 let featuredSwipeStartX=null;
 document.querySelector('.featured-work-image').addEventListener('pointerdown',event=>{featuredSwipeStartX=event.clientX;});
@@ -1593,44 +1587,6 @@ if(ftr&&!document.getElementById('bigMarq')){var m=document.createElement('div')
  m.innerHTML='<div class="bigmarq-in">'+('<span>'+t+'</span>').repeat(4)+'</div>';
  ftr.insertAdjacentElement('beforebegin',m);}
 
-})();
-</script>
-
-<script id="chapter-navigation-js">
-(function(){
- var nav=document.querySelector('.chapter-nav');
- if(!nav)return;
- var chapters=[
-  {id:'top',number:'00',name:'INTRO'},
-  {id:'cv',number:'01',name:'CV'},
-  {id:'portfolio',number:'02',name:'SELECTED WORKS'},
-  {id:'gallery',number:'03',name:'PHOTOS'},
-  {id:'contact',number:'04',name:'CONTACT'}
- ];
- var number=document.getElementById('chapterNumber');
- var name=document.getElementById('chapterName');
- var links=nav.querySelectorAll('.chapter-nav-track a');
- var activeId='';
- var queued=false;
- function updateChapter(){
-  queued=false;
-  var threshold=window.innerHeight*.46;
-  var active=chapters[0];
-  chapters.forEach(function(chapter){var section=document.getElementById(chapter.id);if(section&&section.getBoundingClientRect().top<=threshold)active=chapter;});
-  if(active.id===activeId)return;
-  activeId=active.id;
-  number.textContent=active.number;
-  name.textContent=active.name;
-  links.forEach(function(link,index){if(chapters[index].id===active.id)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});
-  nav.classList.remove('is-changing');
-  void nav.offsetWidth;
-  nav.classList.add('is-changing');
-  window.setTimeout(function(){nav.classList.remove('is-changing');},240);
- }
- function requestUpdate(){if(queued)return;queued=true;window.requestAnimationFrame(updateChapter);}
- window.addEventListener('scroll',requestUpdate,{passive:true});
- window.addEventListener('resize',requestUpdate);
- updateChapter();
 })();
 </script>
 
