@@ -488,17 +488,9 @@ section[id]{padding-top:clamp(2.5rem,4vw,4rem)!important;padding-bottom:clamp(2.
 .site-brand{gap:.5rem}
 .project-card{display:flex;flex-direction:column;height:100%}
 .project-card>.p-4:last-child{margin-top:auto}
-.portfolio-warning-sign{position:absolute;z-index:15;top:.45rem;right:.6rem;width:clamp(4.5rem,6.5vw,6.2rem);height:auto;transform:rotate(8deg);filter:drop-shadow(0 5px 5px rgba(0,0,0,.55));pointer-events:none;animation:warning-sign-pulse 1.9s ease-in-out infinite;transform-origin:55% 70%}
-.portfolio-caution-sign{position:absolute;z-index:11;top:-1rem;right:14vw;width:clamp(150px,12vw,195px);aspect-ratio:1999/1405;transform:rotate(4deg);filter:drop-shadow(0 7px 8px rgba(0,0,0,.58));pointer-events:none}
-.portfolio-caution-sign>img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:contain}
-.portfolio-caution-sign-label{position:absolute;top:37%;left:9%;width:82%;height:52%;display:grid;place-items:center;color:#000;font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.2rem,4.4vw,3.7rem);font-weight:900;letter-spacing:.12em;line-height:1;animation:loud-sign-pulse 1.8s ease-in-out infinite;transform-origin:center}
-@keyframes loud-sign-pulse{0%,100%{transform:scale(1)}38%{transform:scale(1.05)}52%{transform:scale(1.12)}67%{transform:scale(1.04)}}
-@keyframes warning-sign-pulse{0%,100%{transform:rotate(8deg) scale(1)}50%{transform:rotate(11deg) scale(1.075)}}
 .portfolio-project-decor{transition:opacity .15s ease}
 #portfolioGrid .project-card.is-previewing .portfolio-project-decor{opacity:0}
-@media(max-width:760px){.portfolio-warning-sign{top:.35rem;right:.4rem;width:clamp(3.5rem,14vw,4.5rem)}.portfolio-caution-sign{top:0;right:.5rem;width:clamp(105px,27vw,145px)}.portfolio-caution-sign-label{letter-spacing:.08em;font-size:clamp(1.6rem,10vw,2.9rem)}}
 #cv>.grid>div:last-child>.cv-experience-panel{height:100%}
-@media(prefers-reduced-motion:reduce){.portfolio-warning-sign,.portfolio-caution-sign-label{animation:none!important}}
 @media(prefers-reduced-motion:reduce){body::before{animation:none!important}}
 @media(prefers-reduced-motion:reduce){header.site-header{transition:none!important}}
 .hero-actions a,.project-card .open-breakdown,#filters .filter-btn,.site-nav a,.social-menu-toggle,.social-drawer-close,.social-drawer-links a,.social-telegram-button,.icon-btn{transition:transform .16s cubic-bezier(.2,.75,.25,1),box-shadow .16s ease}
@@ -1463,22 +1455,6 @@ function renderCard(item){
   stage.setAttribute('aria-label',item.title+' preview. Hover to play video.');
   stage.querySelector('.portfolio-stage-tag').textContent=item.tag;
   stage.querySelector('.portfolio-stage-title').textContent=item.title;
-  if(item.id==='razor'){
-    const warning=document.createElement('img');
-    warning.className='portfolio-project-decor portfolio-warning-sign';
-    warning.src='assets/images/showreel/warning-sign.png';
-    warning.alt='';
-    warning.setAttribute('aria-hidden','true');
-    stage.appendChild(warning);
-  }else if(item.id==='light010'){
-    const caution=document.createElement('div');
-    caution.className='portfolio-project-decor portfolio-caution-sign';
-    caution.setAttribute('aria-hidden','true');
-    caution.innerHTML='<img src="assets/images/showreel/caution-tape.png" alt=""><span class="portfolio-caution-sign-label">LOUD</span>';
-    const portfolioSection=document.getElementById('portfolio');
-    if(portfolioSection)portfolioSection.appendChild(caution);else stage.appendChild(caution);
-  }
-  
   const dots=card.querySelectorAll('.dots .dot'); 
   const prev=card.querySelector('.slider-prev'); 
   const next=card.querySelector('.slider-next'); 
@@ -1643,6 +1619,8 @@ function loadViewerSlide(index) {
   if (media.type === 'video') {
     mvVideo.src = toFileURL(media.src);
     if(activeViewerItem.poster) mvVideo.poster = toFileURL(activeViewerItem.poster);
+    const keepOriginalVolume=/^(?:Cruiser Forest Lighting Setup|Architecture visualisation)$/i.test(activeViewerItem.title.trim());
+    mvVideo.volume=keepOriginalVolume?1:.5;
     mvVideo.classList.remove('hidden');
     mvVideo.play().catch(() => {});
     mvZoom.classList.add('hidden');
